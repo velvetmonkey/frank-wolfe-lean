@@ -1,5 +1,6 @@
 # frank-wolfe-lean
 
+[![thread](https://img.shields.io/badge/%F0%9F%A7%B5-how%20it%20works-1DA1F2)](https://x.com/thevelvetmonke)
 [![Lean 4](https://img.shields.io/badge/Lean-4.28.0-blue)](https://lean-lang.org/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-v4.28.0-purple)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -12,7 +13,15 @@ Lean 4 formal proofs for the Frank-Wolfe, or conditional gradient, method for co
 
 **Zero sorry statements.** Standard axioms only (`propext`, `Classical.choice`, `Quot.sound`).
 
-## Why it matters
+## What this is, and why it matters
+
+This library formalizes the Frank-Wolfe, or conditional-gradient, method for constrained convex optimization. Its headline theorem, `FrankWolfeSetup.frank_wolfe_convergence`, proves that the suboptimality after step `k+1` is at most `2*L*D^2/(k+3)` for the step size `2/(k+2)`.
+
+The result matters because Frank-Wolfe replaces projection with a linear minimization oracle. The machine-checked proof shows that the Frank-Wolfe gap bounds suboptimality, turns smoothness into a one-step recurrence, and solves that recurrence by induction to obtain the O(1/k) rate.
+
+The theorem works under an axiomatic setup. Convexity and smoothness relative to the supplied gradient map, the feasible-set diameter bound, and optimality of `xstar` are hypotheses. The oracle is selected noncomputably from compactness. The library does not certify a numerical oracle or establish the assumptions for a specific objective.
+
+## Background and motivation
 
 Frank-Wolfe is a projection-free first-order method for constrained convex optimisation. Instead of projecting onto the feasible region after a gradient step, each iteration calls a **linear minimisation oracle** over the constraint set. This makes the method useful for structured feasible regions where linear optimisation is cheaper than projection.
 
